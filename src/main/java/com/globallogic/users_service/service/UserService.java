@@ -1,7 +1,8 @@
 package com.globallogic.users_service.service;
 
 import com.globallogic.users_service.dto.SignUpRequest;
-import com.globallogic.users_service.dto.SignUpResponse;
+import com.globallogic.users_service.dto.UserResponse;
+import com.globallogic.users_service.exception.UserAlreadyExistsException;
 import com.globallogic.users_service.mapper.UserMapper;
 import com.globallogic.users_service.model.User;
 import com.globallogic.users_service.repository.UserRepository;
@@ -16,7 +17,11 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public SignUpResponse signUp(SignUpRequest signUpRequest) {
+    public UserResponse signUp(SignUpRequest signUpRequest) {
+
+        userRepository.findByEmail(signUpRequest.getEmail()).ifPresent(user -> {
+            throw new UserAlreadyExistsException("User with email already exists: " + signUpRequest.getEmail());
+        });
 
         User newUser = UserMapper.toEntity(signUpRequest);
         newUser.setPassword("password");
