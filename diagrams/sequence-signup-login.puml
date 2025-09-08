@@ -1,0 +1,34 @@
+@startuml
+title Sign-Up and Login Sequence
+
+actor Client
+participant "AuthController" as C
+participant "UserService" as S
+database "H2 DB" as DB
+participant "JwtUtil" as JWT
+
+== Sign-Up ==
+Client -> C : POST /sign-up (name,email,password,phones)
+C -> S : signUp(request)
+S -> DB : existsByEmail(email)?
+DB --> S : false
+S -> JWT : generateToken(email)
+JWT --> S : token
+S -> DB : save(user + phones + token)
+DB --> S : user
+S --> C : 200 UserResponse (with token)
+
+== Login ==
+Client -> C : GET /login (Authorization: Bearer token)
+C -> S : login(token)
+S -> JWT : getSubject(token)
+JWT --> S : email
+S -> DB : findByEmail(email)
+DB --> S : user
+S -> JWT : generateToken(email)  <<rotate>>
+JWT --> S : newToken
+S -> DB : save(user with newToken, lastLogin=now)
+DB --> S : user
+S --> C : 200 UserResponse (token=newToken)
+
+@enduml
