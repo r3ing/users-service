@@ -101,4 +101,11 @@ curl -s -X GET http://localhost:8080/api/v1/usersl/ogin -H "Authorization: Beare
 ```
 
 
-```
+## Diagramas (UML)
+En la carpeta `diagrams/` (PlantUML).
+
+- **Component Diagram**: `component.puml`
+- **Sequence Diagram**: `sequence-signup-login.puml`
+
+Puedes renderizar en https://www.plantuml.com/plantuml/
+
