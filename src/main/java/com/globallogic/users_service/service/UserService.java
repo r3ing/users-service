@@ -3,14 +3,16 @@ package com.globallogic.users_service.service;
 import com.globallogic.users_service.dto.SignUpRequest;
 import com.globallogic.users_service.dto.UserResponse;
 import com.globallogic.users_service.exception.UserAlreadyExistsException;
+import com.globallogic.users_service.exception.UserNotFoundException;
 import com.globallogic.users_service.mapper.UserMapper;
 import com.globallogic.users_service.model.User;
 import com.globallogic.users_service.repository.UserRepository;
 import com.globallogic.users_service.security.JwtUtil;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Instant;
 
 @Service
 public class UserService {
@@ -41,4 +43,21 @@ public class UserService {
 
         return UserMapper.toSignUpResponse(savedUser);
     }
+
+    @Transactional
+    public UserResponse login(String token) {
+        String email = jwtUtil.getSubject(token);
+
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        user.setLastLogin(Instant.now());
+        user.setToken(jwtUtil.generateToken(email));
+
+        userRepository.save(user);
+
+        return UserMapper.toSignUpResponse(user);
+
+    }
+
+
 }

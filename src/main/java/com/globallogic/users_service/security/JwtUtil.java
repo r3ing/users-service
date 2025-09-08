@@ -26,4 +26,13 @@ public class JwtUtil {
     }
 
 
+    public String getSubject(String token) {
+        return JWT.decode(token).getSubject();
+    }
+
+    public boolean validateToken(String token) {
+        return JWT.require(Algorithm.HMAC256(secret)).build().verify(token).getSubject() != null;
+    }
+
+
 }
