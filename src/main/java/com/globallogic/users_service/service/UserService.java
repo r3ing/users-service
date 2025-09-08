@@ -6,17 +6,27 @@ import com.globallogic.users_service.exception.UserAlreadyExistsException;
 import com.globallogic.users_service.mapper.UserMapper;
 import com.globallogic.users_service.model.User;
 import com.globallogic.users_service.repository.UserRepository;
+import com.globallogic.users_service.security.JwtUtil;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final JwtUtil jwtUtil;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, JwtUtil jwtUtil, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.jwtUtil = jwtUtil;
+        this.passwordEncoder = passwordEncoder;
     }
 
+
+    @Transactional
     public UserResponse signUp(SignUpRequest signUpRequest) {
 
         userRepository.findByEmail(signUpRequest.getEmail()).ifPresent(user -> {
@@ -24,8 +34,8 @@ public class UserService {
         });
 
         User newUser = UserMapper.toEntity(signUpRequest);
-        newUser.setPassword("password");
-        newUser.setToken("token");
+        newUser.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
+        newUser.setToken(jwtUtil.generateToken(signUpRequest.getEmail()));
 
         User savedUser = userRepository.save(newUser);
 
