@@ -25,13 +25,12 @@ public class JwtUtil {
                 .sign(Algorithm.HMAC256(secret));
     }
 
-
     public String getSubject(String token) {
         return JWT.decode(token).getSubject();
     }
 
-    public boolean validateToken(String token) {
-        return JWT.require(Algorithm.HMAC256(secret)).build().verify(token).getSubject() != null;
+    public void validateToken(String token) {
+        JWT.require(Algorithm.HMAC256(secret)).build().verify(token);
     }
 
 

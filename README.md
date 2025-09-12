@@ -97,7 +97,7 @@ Debes enviar el **token** previo en `Authorization: Bearer <token>`.
 curl -s -X POST http://localhost:8080/api/v1/users/sign-up   -H 'Content-Type: application/json'   -d '{"name":"Julio","email":"julio@test.com","password":"abCdef12","phones":[{"number":12345678,"citycode":2,"contrycode":"56"}]}'
 
 # Usar el token devuelto arriba
-curl -s -X GET http://localhost:8080/api/v1/usersl/ogin -H "Authorization: Bearer <TOKEN>"
+curl -s -X GET http://localhost:8080/api/v1/users/login -H "Authorization: Bearer <TOKEN>"
 ```
 
 

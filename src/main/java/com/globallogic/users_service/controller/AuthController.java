@@ -2,7 +2,7 @@ package com.globallogic.users_service.controller;
 
 import com.globallogic.users_service.dto.SignUpRequest;
 import com.globallogic.users_service.dto.UserResponse;
-import com.globallogic.users_service.service.UserService;
+import com.globallogic.users_service.service.UserServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +14,9 @@ import javax.validation.Valid;
 @RequestMapping(value = "/api/v1/users", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AuthController {
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
-    public AuthController(UserService userService) {
+    public AuthController(UserServiceImpl userService) {
         this.userService = userService;
     }
 

@@ -1,6 +1,7 @@
 package com.globallogic.users_service.security;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,8 +18,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtRequestFilter jwtRequestFilter;
 
-    public SecurityConfig(JwtRequestFilter jwtRequestFilter) {
+    private final ObjectMapper objectMapper;
+
+    public SecurityConfig(JwtRequestFilter jwtRequestFilter, ObjectMapper objectMapper) {
         this.jwtRequestFilter = jwtRequestFilter;
+        this.objectMapper = objectMapper;
     }
 
     @Bean
@@ -29,18 +33,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .authorizeRequests()
                 .antMatchers("/api/v1/users/sign-up", "/h2-console/**").permitAll()
-                .antMatchers("/api/v1/users/login").authenticated()
                 .anyRequest().authenticated()
                 .and()
-                .headers().frameOptions().disable()
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling()
+                .authenticationEntryPoint(new RestAuthenticationEntryPoint(objectMapper))
+                .accessDeniedHandler(new RestAccessDeniedHandler(objectMapper))
                 .and()
-                .httpBasic().disable()
-                .formLogin().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+                .headers().frameOptions().disable();
     }
 
 }

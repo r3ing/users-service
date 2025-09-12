@@ -49,5 +49,4 @@ public class ApiErrorHandler {
         return new ResponseEntity<>(new ErrorResponse(Instant.now(), HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-
 }
