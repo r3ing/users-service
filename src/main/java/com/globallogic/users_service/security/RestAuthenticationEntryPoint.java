@@ -12,6 +12,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.Instant;
 
+/**
+ * The RestAuthenticationEntryPoint class is a custom implementation of
+ * the {@link AuthenticationEntryPoint} interface, used in Spring Security
+ * to handle unauthorized access attempts.
+ * This class is responsible for intercepting unauthorized requests
+ * and providing a standardized JSON response with a 401 (Unauthorized)
+ * status code. It also generates an error response containing a detailed
+ * message based on the presence and validity of the Authorization header.
+ */
 public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     private final ObjectMapper mapper;

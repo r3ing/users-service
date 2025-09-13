@@ -10,6 +10,12 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 @Configuration
 public class ObjectMapperConfig {
 
+    /**
+     * Configures and provides a customized instance of {@link ObjectMapper}.
+     *
+     * @param builder a {@link Jackson2ObjectMapperBuilder} used to build and configure the ObjectMapper.
+     * @return a customized {@link ObjectMapper} instance with JavaTimeModule registered.
+     */
     @Bean
     public ObjectMapper objectMapper(Jackson2ObjectMapperBuilder builder) {
         ObjectMapper mapper = builder.build();

@@ -9,6 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Represents a user entity in the system. This class is mapped to the "users" table in the database
+ * using JPA annotations. It includes relevant user information such as name, email, password,
+ * creation timestamp, last login, token, and active status. Additionally, it maintains a
+ * relationship with the {@link Phone} entity, representing a user's associated phone numbers.
+ */
 @Entity
 @Table(name = "users")
 @Data

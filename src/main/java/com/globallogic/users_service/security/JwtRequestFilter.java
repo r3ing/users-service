@@ -20,6 +20,11 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.Optional;
 
+/**
+ * The JwtRequestFilter class is responsible for processing incoming HTTP requests
+ * and validating JWT tokens. This filter ensures that only valid JWT tokens are allowed and sets the security
+ * context for later usage in the application.
+ */
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 

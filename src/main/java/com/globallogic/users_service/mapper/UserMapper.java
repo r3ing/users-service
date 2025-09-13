@@ -9,6 +9,13 @@ import com.globallogic.users_service.model.User;
 
 import java.util.stream.Collectors;
 
+/**
+ * Utility class for mapping between User, SignUpRequest, and UserResponse objects.
+ * <p>
+ * This class provides static methods to:
+ * - Convert a SignUpRequest object to a User entity.
+ * - Map a User entity to a UserResponse.
+ */
 public class UserMapper {
 
     public static User toEntity(SignUpRequest req) {

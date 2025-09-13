@@ -14,6 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 
+/**
+ * Implementation of the {@link UserService} interface, providing functionality for user
+ * registration (sign-up) and login processes. This service interacts with the database
+ * through the {@link UserRepository}, handles token generation and validation via {@link JwtUtil},
+ * and performs password encoding using {@link PasswordEncoder}.
+ */
 @Service
 public class UserServiceImpl implements UserService {
 

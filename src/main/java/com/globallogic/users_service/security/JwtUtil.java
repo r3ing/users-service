@@ -7,6 +7,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+/**
+ * The JwtUtil class is a utility class for handling JSON Web Tokens (JWT).
+ * It provides methods for generating, decoding, and validating JWT tokens.
+ * This class is used for implementing secure authentication mechanisms.
+ */
 @Component
 public class JwtUtil {
 

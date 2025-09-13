@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+/**
+ * The AuthController class handles user authentication and registration functionalities.
+ * This controller provides REST endpoints for user sign-up and login operations.
+ */
 @RestController
 @RequestMapping(value = "/api/v1/users", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AuthController {

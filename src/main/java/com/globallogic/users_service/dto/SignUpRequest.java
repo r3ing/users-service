@@ -9,6 +9,10 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.util.List;
 
+/**
+ * A data transfer object representing a user's sign-up request. This class is primarily used to capture
+ * user data during the registration process.
+ */
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
