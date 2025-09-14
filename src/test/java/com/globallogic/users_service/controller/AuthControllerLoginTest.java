@@ -72,7 +72,7 @@ public class AuthControllerLoginTest {
                         .header("Authorization", "Bearer " + tokenSend))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.error[0].codigo").value(401))
-                .andExpect(jsonPath("$.error[0].detail").value("Invalid or expired token."));
+                .andExpect(jsonPath("$.error[0].detail").value("Invalid or expired token for user."));
     }
 
     @Test
@@ -100,10 +100,13 @@ public class AuthControllerLoginTest {
     @Test
     void loginWithInvalidTokenShouldReturn401() throws Exception {
 
+        String invalidToken = "invalid.jwt.token";
+
         mockMvc.perform(get("/api/v1/users/login")
-                        .header("Authorization", "Bearer " + "invalid.jwt.token"))
+                        .header("Authorization", "Bearer " + invalidToken))
                 .andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("$.error[0].codigo").value(401));
+                .andExpect(jsonPath("$.error[0].codigo").value(401))
+                .andExpect(jsonPath("$.error[0].detail").value("Invalid or expired token."));
     }
 }
 

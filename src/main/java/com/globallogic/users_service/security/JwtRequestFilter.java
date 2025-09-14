@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.globallogic.users_service.dto.ErrorResponse;
 import com.globallogic.users_service.model.User;
 import com.globallogic.users_service.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,6 +33,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
     private final ObjectMapper objectMapper;
+    private static final Logger log = LoggerFactory.getLogger(JwtRequestFilter.class);
+
 
     public JwtRequestFilter(JwtUtil jwtUtil, UserRepository userRepository, ObjectMapper objectMapper) {
         this.jwtUtil = jwtUtil;
@@ -65,7 +69,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             }
 
             if (!jwt.equals(dbUser.get().getToken())) {
-                sendUnauthorized(response, "Invalid or expired token.");
+                sendUnauthorized(response, "Invalid or expired token for user.");
                 return;
             }
 
@@ -76,10 +80,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
 
         } catch (JWTVerificationException ex) {
-            sendUnauthorized(response, ex.getMessage());
+            log.debug("JWT validation failed: {}", ex.getMessage());
+            sendUnauthorized(response, "Invalid or expired token.");
             return;
         }
-
 
         filterChain.doFilter(request, response);
     }

@@ -53,7 +53,6 @@ Configura (opcional) por entorno:
   "isActive": true,
   "name": "Julio Gonzalez",
   "email": "julio@test.com",
-  "password": "a2asfGfdfdf4",
   "phones": [
     {"number": 87650009, "citycode": 7, "contrycode": "25"}
   ]
@@ -61,16 +60,38 @@ Configura (opcional) por entorno:
 ```
 
 **Errores JSON**
+
+- `400` cuando el email tiene un formato invalido
 ```json
 {
   "error": [{
     "timestamp": "2025-09-06T16:43:00.000Z",
     "codigo": 400,
-    "detail": "email: Email format is invalid"
+    "detail": "Email format is invalid."
   }]
 }
 ```
-- `409` cuando el email ya existe.
+- `400` cuando el password tiene un formato invalido
+```json
+{
+  "error": [{
+    "timestamp": "2025-09-06T16:43:00.000Z",
+    "codigo": 400,
+    "detail": "Password must be 8-12 chars, contain exactly one uppercase letter and exactly two digits; only letters and digits are allowed."
+  }]
+}
+```
+
+- `409` cuando el usuario ya existe.
+```json
+{
+  "error": [{
+    "timestamp": "2025-09-06T16:43:00.000Z",
+    "codigo": 409,
+    "detail": "User with email already exists: user@email.com"
+  }]
+}
+```
 
 ### 2) `GET /api/v1/users/login`
 Debes enviar el **token** previo en `Authorization: Bearer <token>`.
@@ -85,12 +106,12 @@ Debes enviar el **token** previo en `Authorization: Bearer <token>`.
   "isActive": true,
   "name": "Julio Gonzalez",
   "email": "julio@testssw.cl",
-  "password": "********",
   "phones": [
     {"number": 87650009, "citycode": 7, "contrycode": "25"}
   ]
 }
 ```
+
 
 ## Curl rápido
 ```bash
@@ -102,10 +123,9 @@ curl -s -X GET http://localhost:8080/api/v1/users/login -H "Authorization: Beare
 
 
 ## Diagramas (UML)
-En la carpeta `diagrams/` (PlantUML).
+En la carpeta `diagrams/`
 
-- **Component Diagram**: `component.puml`
-- **Sequence Diagram**: `sequence-signup-login.puml`
+- **Component Diagram**: `component.png`
+- **Sequence Diagram**: `sequence-signup-login.png`
 
-Puedes renderizar en https://www.plantuml.com/plantuml/
 
