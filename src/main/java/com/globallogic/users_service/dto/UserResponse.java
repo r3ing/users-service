@@ -9,6 +9,13 @@ import lombok.NoArgsConstructor;
 import java.time.Instant;
 import java.util.List;
 
+/**
+ * A data transfer object that represents the response provided to the user
+ * after a successful sign-up or login operation.
+ * <p>
+ * This class is primarily used to transfer user-related information, such as
+ * account creation details, authentication token, and personal details.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

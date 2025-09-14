@@ -6,7 +6,6 @@ import com.globallogic.users_service.dto.UserResponse;
 import com.globallogic.users_service.exception.UserAlreadyExistsException;
 import com.globallogic.users_service.exception.UserNotFoundException;
 import com.globallogic.users_service.mapper.UserMapper;
-import com.globallogic.users_service.model.Phone;
 import com.globallogic.users_service.model.User;
 import com.globallogic.users_service.repository.UserRepository;
 import com.globallogic.users_service.security.JwtUtil;
@@ -15,7 +14,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.time.Instant;
 import java.util.*;
@@ -36,7 +34,7 @@ class UserServiceTest {
     private PasswordEncoder passwordEncoder;
 
     @InjectMocks
-    private UserService userService;
+    private UserServiceImpl userService;
 
     public UserServiceTest() {
         MockitoAnnotations.openMocks(this);

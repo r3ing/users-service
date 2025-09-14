@@ -9,6 +9,10 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Represents an error response containing one or more error details.
+ * This is used for providing information about errors in a structured format.
+ */
 @Setter
 @Getter
 @NoArgsConstructor

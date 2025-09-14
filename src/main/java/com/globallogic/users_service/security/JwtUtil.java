@@ -6,7 +6,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.UUID;
 
+/**
+ * The JwtUtil class is a utility class for handling JSON Web Tokens (JWT).
+ * It provides methods for generating, decoding, and validating JWT tokens.
+ * This class is used for implementing secure authentication mechanisms.
+ */
 @Component
 public class JwtUtil {
 
@@ -19,19 +25,19 @@ public class JwtUtil {
     public String generateToken(String email) {
 
         return JWT.create()
+                .withJWTId(UUID.randomUUID().toString())
                 .withSubject(email)
-                .withIssuedAt(new Date())
+                .withIssuedAt(new Date(System.currentTimeMillis()))
                 .withExpiresAt(new Date(System.currentTimeMillis() + expirationMillis))
                 .sign(Algorithm.HMAC256(secret));
     }
-
 
     public String getSubject(String token) {
         return JWT.decode(token).getSubject();
     }
 
-    public boolean validateToken(String token) {
-        return JWT.require(Algorithm.HMAC256(secret)).build().verify(token).getSubject() != null;
+    public void validateToken(String token) {
+        JWT.require(Algorithm.HMAC256(secret)).build().verify(token);
     }
 
 

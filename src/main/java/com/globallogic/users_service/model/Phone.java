@@ -4,6 +4,14 @@ import lombok.Data;
 
 import javax.persistence.*;
 
+/**
+ * Represents a phone entity associated with a user in the system.
+ * Each phone includes detailed information such as the phone number, city code,
+ * country code, and its association to a user.
+ *
+ * This entity is mapped to the "phones" table in the database.
+ * It uses JPA annotations for ORM.
+ */
 @Entity
 @Table(name = "phones")
 @Data

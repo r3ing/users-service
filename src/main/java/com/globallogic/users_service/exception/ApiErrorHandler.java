@@ -12,6 +12,10 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * A global exception handler for handling API-related exceptions in a structured manner.
+ * Provides customized responses for various exception types encountered during API execution.
+ */
 @RestControllerAdvice
 public class ApiErrorHandler {
 
@@ -48,6 +52,5 @@ public class ApiErrorHandler {
     public ResponseEntity<ErrorResponse> handleException(Exception ex) {
         return new ResponseEntity<>(new ErrorResponse(Instant.now(), HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
 
 }
