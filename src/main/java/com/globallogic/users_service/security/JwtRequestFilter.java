@@ -45,35 +45,49 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         final String authHeader = request.getHeader("Authorization");
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            String jwt = authHeader.substring(7);
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
-            try {
-                jwtUtil.validateToken(jwt);
+        try {
+            String jwt = authHeader.substring(7).trim();
 
-                String username = jwtUtil.getSubject(jwt);
+            jwtUtil.validateToken(jwt);
 
-                Optional<User> dbUser = userRepository.findByEmail(username);
+            String username = jwtUtil.getSubject(jwt);
 
-                if (dbUser.isPresent() && dbUser.get().getToken().equals(jwt)) {
-                    UsernamePasswordAuthenticationToken authToken =
-                            new UsernamePasswordAuthenticationToken(username, null, Collections.emptyList());
+            Optional<User> dbUser = userRepository.findByEmail(username);
 
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
-                }
-
-            } catch (JWTVerificationException ex) {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-
-                ErrorResponse body = new ErrorResponse(Instant.now(), HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage());
-
-                response.getWriter().write(objectMapper.writeValueAsString(body));
+            if (dbUser.isEmpty()) {
+                sendUnauthorized(response, "User not found or invalid token.");
                 return;
             }
 
+            if (!jwt.equals(dbUser.get().getToken())) {
+                sendUnauthorized(response, "Invalid or expired token.");
+                return;
+            }
+
+            UsernamePasswordAuthenticationToken authToken =
+                    new UsernamePasswordAuthenticationToken(username, null, Collections.emptyList());
+
+            SecurityContextHolder.getContext().setAuthentication(authToken);
+
+
+        } catch (JWTVerificationException ex) {
+            sendUnauthorized(response, ex.getMessage());
+            return;
         }
 
+
         filterChain.doFilter(request, response);
+    }
+
+    private void sendUnauthorized(HttpServletResponse response, String detail) throws IOException {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        ErrorResponse body = new ErrorResponse(Instant.now(), HttpServletResponse.SC_UNAUTHORIZED, detail);
+        objectMapper.writeValue(response.getWriter(), body);
     }
 }
